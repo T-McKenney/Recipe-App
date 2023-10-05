@@ -1,4 +1,4 @@
-package guru.springframework.domain;
+package guru.springframework.recipeapp.domain;
 
 /*
     Created by tylermckenney on 10/5/23.
@@ -26,8 +26,11 @@ public class Recipe {
     //todo add
     // private Difficulty difficulty;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-    private Set<Category> category;
+    @ManyToMany
+    @JoinTable(name = "recipe_category",
+            joinColumns = @JoinColumn(name = "recipe_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
+    private Set<Category> categories;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
     private Set<Ingredient> ingredients;
@@ -105,12 +108,12 @@ public class Recipe {
         this.directions = directions;
     }
 
-    public Set<Category> getCategory() {
-        return category;
+    public Set<Category> getCategories() {
+        return categories;
     }
 
-    public void setCategory(Set<Category> category) {
-        this.category = category;
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 
     public Set<Ingredient> getIngredients() {

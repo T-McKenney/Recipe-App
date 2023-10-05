@@ -1,10 +1,12 @@
-package guru.springframework.domain;
+package guru.springframework.recipeapp.domain;
 
 /*
     Created by tylermckenney on 10/5/23.
 */
 
 import jakarta.persistence.*;
+
+import java.util.Set;
 
 @Entity
 public class Category {
@@ -13,8 +15,8 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private Recipe recipe;
+    @ManyToMany(mappedBy = "categories")
+    private Set<Recipe> recipes;
 
     private String departmentName;
 
@@ -27,12 +29,12 @@ public class Category {
         this.id = id;
     }
 
-    public Recipe getRecipe() {
-        return recipe;
+    public Set<Recipe> getRecipes() {
+        return recipes;
     }
 
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
+    public void setRecipes(Set<Recipe> recipes) {
+        this.recipes = recipes;
     }
 
     public String getDepartmentName() {
