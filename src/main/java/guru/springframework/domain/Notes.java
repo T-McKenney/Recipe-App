@@ -1,10 +1,10 @@
-package guru.springframework.domain.Notes;
+package guru.springframework.domain;
 
 /*
     Created by tylermckenney on 10/5/23.
 */
 
-import guru.springframework.domain.Recipe.Recipe;
+import guru.springframework.domain.Recipe;
 import jakarta.persistence.*;
 
 @Entity
