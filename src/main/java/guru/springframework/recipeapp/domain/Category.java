@@ -6,6 +6,7 @@ package guru.springframework.recipeapp.domain;
 
 import jakarta.persistence.*;
 
+
 import java.util.Set;
 
 @Entity
@@ -18,7 +19,7 @@ public class Category {
     @ManyToMany(mappedBy = "categories")
     private Set<Recipe> recipes;
 
-    private String departmentName;
+    private String description;
 
 
     public Long getId() {
@@ -37,11 +38,11 @@ public class Category {
         this.recipes = recipes;
     }
 
-    public String getDepartmentName() {
-        return departmentName;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDepartmentName(String departmentName) {
-        this.departmentName = departmentName;
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
