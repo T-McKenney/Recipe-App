@@ -20,6 +20,9 @@ public class Ingredient {
 
     //private UnitOfMeasure uom;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    private UnitOfMeasure uom;
+
     @ManyToOne
     private Recipe recipe;
 
