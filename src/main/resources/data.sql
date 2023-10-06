@@ -8,4 +8,7 @@ VALUES ('Teaspoon'),
        ('Tablespoon'),
        ('Cup'),
        ('Pinch'),
-       ('Ounce');
+       ('Ounce'),
+       ('Each'),
+       ('Dash'),
+       ('Pint');
