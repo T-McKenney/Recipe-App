@@ -1,5 +1,6 @@
 package guru.springframework.recipeapp.services;
 
+import guru.springframework.recipeapp.commands.RecipeCommand;
 import guru.springframework.recipeapp.converters.RecipeCommandToRecipe;
 import guru.springframework.recipeapp.converters.RecipeToRecipeCommand;
 import guru.springframework.recipeapp.domain.Recipe;
@@ -8,6 +9,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -15,6 +18,7 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 
 /*
@@ -24,6 +28,8 @@ import static org.mockito.Mockito.*;
 class RecipeServiceImplTest {
 
     AutoCloseable openMocks;
+
+    MockMvc mockMvc;
 
     RecipeServiceImpl recipeService;
 
@@ -77,5 +83,19 @@ class RecipeServiceImplTest {
         assertEquals(recipes.size(), 1);
         verify(recipeRepository, times(1)).findAll();
         verify(recipeRepository, never()).findById(anyLong());
+    }
+
+    @Test
+    void testDeleteById() {
+
+        //given
+        Long idToDelete = Long.valueOf(2L);
+
+        //when
+        recipeService.deleteById(idToDelete);
+
+        //then
+        verify(recipeRepository, times(1)).deleteById(anyLong());
+
     }
 }
