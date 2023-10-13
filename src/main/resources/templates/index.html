@@ -22,8 +22,8 @@
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
         <div class="col-md-6 offset-md-3">
-            <div class="card bg-primary">
-                <div class="card-header">
+            <div class="card">
+                <div class="card-header text-bg-primary">
                     <h1 class="card-title">My Recipes!</h1>
                 </div>
                 <div class="card-body">
@@ -34,13 +34,15 @@
                                 <th>ID</th>
                                 <th>Description</th>
                                 <th>View</th>
+                                <th>Update</th>
                             </tr>
                             </thead>
                             <tr th:each="recipe : ${recipes}">
                                 <!--/*@thymesVar id="recipe" type="guru.springframework.recipeapp.domain.Recipe"*/-->
                                 <td th:text="${recipe.id}">123</td>
                                 <td th:text="${recipe.description}">Delicious</td>
-                                <td><a href="#" th:href="@{'/recipe/show/' + ${recipe.id}}">View</a></td>
+                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/show'}">View</a></td>
+                                <td><a href="#" th:href="@{'/recipe/' + ${recipe.id} + '/update'}">Update</a></td>
                             </tr>
                         </table>
                     </div>

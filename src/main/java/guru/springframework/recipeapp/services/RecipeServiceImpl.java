@@ -10,6 +10,7 @@ import guru.springframework.recipeapp.converters.RecipeToRecipeCommand;
 import guru.springframework.recipeapp.domain.Recipe;
 import guru.springframework.recipeapp.repositories.RecipeRepository;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -17,52 +18,56 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-@Slf4j
 @Service
+@Slf4j
+@AllArgsConstructor
 public class RecipeServiceImpl implements RecipeService {
 
     private final RecipeRepository recipeRepository;
     private final RecipeCommandToRecipe recipeCommandToRecipe;
     private final RecipeToRecipeCommand recipeToRecipeCommand;
 
-    public RecipeServiceImpl(RecipeRepository recipeRepository, RecipeCommandToRecipe recipeCommandToRecipe, RecipeToRecipeCommand recipeToRecipeCommand) {
-        this.recipeRepository = recipeRepository;
-        this.recipeCommandToRecipe = recipeCommandToRecipe;
-        this.recipeToRecipeCommand = recipeToRecipeCommand;
-    }
-
     @Override
     public Set<Recipe> getRecipes() {
 
-        log.debug("Im in the service");
-
+        log.debug("Entering getRecipes");
         Set<Recipe> recipeSet = new HashSet<>();
         recipeRepository.findAll().iterator().forEachRemaining(recipeSet::add);
+        log.info("Exiting getRecipes");
         return recipeSet;
     }
 
     @Override
     public Recipe findById(Long aLong) {
 
+        log.info("Entering findById for: " + aLong );
         Optional<Recipe> recipeOptional = recipeRepository.findById(aLong);
-
-        if(recipeOptional.isEmpty()) {
-            throw new RuntimeException("Recipe not found!");
-        }
-
-        return recipeOptional.get();
+        Recipe recipe = recipeOptional.orElseGet(() -> null);
+        log.info("Exiting findById for: " + aLong );
+        return recipe;
     }
 
     @Override
     @Transactional
-    public RecipeCommand saveRecipeCommand(RecipeCommand command) {
+    public RecipeCommand findCommandById(Long aLong) {
+        log.info("Entering findCommandById for: " + aLong);
+        Recipe recipe = findById(aLong);
+        RecipeCommand recipeCommand = recipeToRecipeCommand.convert(recipe);
+        log.info("Exiting findCommandById for: " + aLong );
+        return recipeCommand;
+    }
 
-        Recipe detachedRecipe = recipeCommandToRecipe.convert(command);
+    @Override
+    @Transactional
+    public RecipeCommand saveRecipeCommand(RecipeCommand recipeCommand) {
 
-        assert detachedRecipe != null;
-        Recipe savedRecipe = recipeRepository.save(detachedRecipe);
-        log.debug("Saved RecipeId: " + savedRecipe.getId());
-        return recipeToRecipeCommand.convert(savedRecipe);
+        log.info("Entering saveRecipeCommand for:" + recipeCommand.getDescription());
+        Recipe recipe = recipeCommandToRecipe.convert(recipeCommand);
+        assert recipe != null;
+        Recipe savedRecipe = recipeRepository.save(recipe);
+        RecipeCommand detachRecipeCommand = recipeToRecipeCommand.convert(savedRecipe);
+        log.info("Exiting savRecipeCommand for: " + recipeCommand.getDescription());
+        return detachRecipeCommand;
     }
 
 

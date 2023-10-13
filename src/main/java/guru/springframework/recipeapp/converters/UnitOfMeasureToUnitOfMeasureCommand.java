@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class UnitOfMeasureToUnitOfMeasureCommand implements Converter<UnitOfMeasure, UnitOfMeasureCommand> {
 
+    @Override
     @Synchronized
     @Nullable
-    @Override
     public UnitOfMeasureCommand convert(UnitOfMeasure unitOfMeasure) {
 
         if (unitOfMeasure != null) {

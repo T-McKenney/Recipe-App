@@ -12,9 +12,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class NotesToNotesCommand implements Converter<Notes, NotesCommand>{
 
+    @Override
     @Synchronized
     @Nullable
-    @Override
     public NotesCommand convert(Notes source) {
         if (source == null) {
             return null;

@@ -6,12 +6,14 @@ package guru.springframework.recipeapp.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Data
 @Entity
+@NoArgsConstructor
 public class Recipe {
 
     @Id
@@ -51,9 +53,11 @@ public class Recipe {
         notes.setRecipe(this);
     }
 
-    public Recipe addIngredient(Ingredient ingredient) {
+    public void addIngredient(Ingredient ingredient) {
+        if (this.ingredients == null) {
+            this.ingredients = new HashSet<>();
+        }
         ingredient.setRecipe(this);
         this.ingredients.add(ingredient);
-        return this;
     }
 }

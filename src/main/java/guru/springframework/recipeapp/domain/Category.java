@@ -10,9 +10,9 @@ import lombok.*;
 
 import java.util.Set;
 
+@Entity
 @Data
 @EqualsAndHashCode(exclude = {"recipes"})
-@Entity
 public class Category {
 
     @Id
