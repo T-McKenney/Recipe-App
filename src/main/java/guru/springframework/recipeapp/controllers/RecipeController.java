@@ -23,7 +23,6 @@ import javax.naming.Binding;
 @Controller
 @AllArgsConstructor
 @Slf4j
-@RequestMapping("")
 public class RecipeController {
     private final RecipeService recipeService;
 
@@ -46,7 +45,14 @@ public class RecipeController {
         return RECIPE_RECIPEFORM_URL;
     }
 
-    @PostMapping("/recipe")
+    @GetMapping("recipe/{id}/update")
+    public String updateRecipe(@PathVariable String id, Model model){
+        RecipeCommand recipeCommand = recipeService.findCommandById(Long.valueOf(id));
+        model.addAttribute("recipe", recipeCommand);
+        return RECIPE_RECIPEFORM_URL;
+    }
+
+    @PostMapping("recipe/")
     public String saveOrUpdateRecipe(@Valid @ModelAttribute("recipe") RecipeCommand recipeCommand, BindingResult bindingResult){
 
         if (bindingResult.hasErrors()) {
@@ -62,14 +68,7 @@ public class RecipeController {
         return "redirect:/recipe/" +savedRecipe.getId() +"/show" ;
     }
 
-    @GetMapping("/recipe/{id}/update")
-    public String updateRecipe(@PathVariable String id, Model model){
-        RecipeCommand recipeCommand = recipeService.findCommandById(Long.valueOf(id));
-        model.addAttribute("recipe", recipeCommand);
-        return RECIPE_RECIPEFORM_URL;
-    }
-
-    @GetMapping("/recipe/{id}/delete")
+    @GetMapping("recipe/{id}/delete")
     public String deleteRecipe(@PathVariable String id) {
 
         log.debug("Deleting id: " + id);
