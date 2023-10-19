@@ -8,6 +8,7 @@ import guru.springframework.recipeapp.commands.RecipeCommand;
 import guru.springframework.recipeapp.converters.RecipeCommandToRecipe;
 import guru.springframework.recipeapp.converters.RecipeToRecipeCommand;
 import guru.springframework.recipeapp.domain.Recipe;
+import guru.springframework.recipeapp.exceptions.NotFoundException;
 import guru.springframework.recipeapp.repositories.RecipeRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -40,11 +41,12 @@ public class RecipeServiceImpl implements RecipeService {
     @Override
     public Recipe findById(Long aLong) {
 
-        log.info("Entering findById for: " + aLong );
-        Optional<Recipe> recipeOptional = recipeRepository.findById(aLong);
-        Recipe recipe = recipeOptional.orElseGet(() -> null);
-        log.info("Exiting findById for: " + aLong );
-        return recipe;
+        Optional<Recipe> recipeOptional = recipeRepository.findById(1L);
+
+        if (recipeOptional.isEmpty()) {
+            throw new NotFoundException("Recipe Not Found!");
+        }
+        return recipeOptional.get();
     }
 
     @Override

@@ -4,6 +4,7 @@ import guru.springframework.recipeapp.commands.RecipeCommand;
 import guru.springframework.recipeapp.converters.RecipeCommandToRecipe;
 import guru.springframework.recipeapp.converters.RecipeToRecipeCommand;
 import guru.springframework.recipeapp.domain.Recipe;
+import guru.springframework.recipeapp.exceptions.NotFoundException;
 import guru.springframework.recipeapp.repositories.RecipeRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,6 +50,17 @@ class RecipeServiceImplTest {
         openMocks = MockitoAnnotations.openMocks(this);
 
         recipeService = new RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToRecipeCommand);
+    }
+
+    @Test
+    void getRecipeByIdTestNotFound() {
+        Optional<Recipe> recipeOptional = Optional.empty();
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        assertThrows(NotFoundException.class, () -> {
+            Recipe recipeReturned = recipeService.findById(1L);
+        });
     }
 
 
